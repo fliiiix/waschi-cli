@@ -21,12 +21,12 @@ On my setup $Location is ~
 ###Commands
 <pre>
 Usage:
-   -w thing or --wasch thing     Wash something  
-   -f thing or --find thing      Find something  
+   -w object or --wash object    Wash object  
+   -f object or --find object    Find object  
    -serverlist                   Print the list with the Servers  
 
-   If you have no idea for a thing you can gerate one with  
-   -thing  
+   If you have no idea for a object you can gerate one with  
+   -object  
    Example:  
    -f -thing
 </pre>
@@ -38,6 +38,7 @@ Create an [Issue](https://github.com/fliiiix/waschi-cli/issues)
 * MeikoDis creator of http://waschi.org/ 
 * Revengeday for the Pointlessword API
 * License
+
 Copyright (c) 2013, Felix 
 All rights reserved.
 
