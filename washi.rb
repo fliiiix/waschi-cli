@@ -23,7 +23,7 @@ class Washi
 		@serverList = getServerList()
 
 		if @serverList == nil
-			puts "No server where found!"
+			puts "No server were found!"
 		end
 	end
 
@@ -34,19 +34,19 @@ class Washi
 		end
 	end
 
-	def find(thing)
-		if thing == nil
-			return "You need a thing to wasch! Use -f thing or --find thing"
+	def find(object)
+		if object == nil
+			return "You need a object to wasch! Use -f object or --find object"
 		end
-		if thing == "-thing"
-			thing = randomPointlessWord
+		if object == "-object"
+			object = randomPointlessWord
 		end
 		found = false
 		@serverList.each do |uri|
 			begin
 				uri["receive.php"]= "found"
 				url = URI(uri)
-				res = Net::HTTP.get(url).index(thing)
+				res = Net::HTTP.get(url).index(object)
 				uri["found"] = ""
 				if res != nil
 					found = true
@@ -59,25 +59,25 @@ class Washi
 			end
 		end
 		if found
-			puts "Yeah we found \"" + thing + "\""
+			puts "Yeah, we found \"" + object + "\""
 		else
-			puts "Sorry we don't found \"" + thing + "\", If you want you can Wasch it ;)"
+			puts "Sorry, we haven't found \"" + object + "\", If you want you can Wasch it ;)"
 		end
 
 	end
 
-	def wash(thing)
-		if thing == nil
-			return "You need a thing to wasch! Use -w thing or --wasch thing"
+	def wash(object)
+		if object == nil
+			return "You need a object to wash! Use -w object or --wash object"
 		end
-		if thing == "-thing"
-			thing = randomPointlessWord
+		if object == "-object"
+			object = randomPointlessWord
 		end
 		begin
 			server = @serverList.sample
 			server["receive"]= "echowash"
 			url = URI(server)
-			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => thing)
+			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => object)
 			server["echowash.php"] = ""
 			puts htmlDecoding(res.body)
 			puts "-> from server: " + server
@@ -90,14 +90,14 @@ class Washi
 		puts <<-EOF 
 Ruby-client for http://waschi.org
 Usage:
-   -w thing or --wasch thing     Wash something
-   -f thing or --find thing      Find something
-   -serverlist                   Print the list with the Servers
+   -w object or --wash object      Wash someobject
+   -f object or --find object      Find someobject
+   -serverlist                     Print the list with the Servers
 
-   If you have no idea for a thing you can gerate one with
-   -thing
+   If you have no idea for a object you can gerate one with
+   -object
    Example:
-   -f -thing
+   -f -object
    EOF
 	end
 
@@ -116,7 +116,7 @@ Usage:
 	end
 
 	def htmlDecoding(string)
-		return string.gsub("&auml;", "ä").gsub("&uuml;", "ü").gsub("&ouml;", "ö")
+		return string.gsub("&auml;", "ä").gsub("&uuml;", "ü").gsub("&ouml;", "ö").gsub("&Auml;", "Ä").gsub("&Uuml;", "Ü").gsub("&Ouml;", "Ö").gsub("&szlig;", "ß")
 	end
 end
 
@@ -125,7 +125,7 @@ w = Washi.new
 case ARGV[0]
 	when "-w"
 		w.wash(ARGV[1])
-	when "--wasch"
+	when "--wash"
 		w.wash(ARGV[1])
 	when "-f"
 		w.find(ARGV[1])
