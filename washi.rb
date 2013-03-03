@@ -6,7 +6,7 @@ require "net/http"
 begin
   require 'Win32/Console/ANSI' if RUBY_PLATFORM =~ /win32/
 rescue LoadError
-  raise 'You must gem install win32console to use color on Windows'
+  raise 'You have to run \'gem install win32console\' to use color on Windows'
 end
 
 class String
@@ -38,7 +38,7 @@ class Washi
 		if object == nil
 			return "You need a object to wasch! Use -f object or --find object"
 		end
-		if object == "-object"
+		if object == "-objec-t"
 			object = randomPointlessWord
 		end
 		found = false
@@ -61,7 +61,7 @@ class Washi
 		if found
 			puts "Yeah, we found \"" + object + "\""
 		else
-			puts "Sorry, we haven't found \"" + object + "\", If you want you can Wasch it ;)"
+			puts "Sorry, we haven't found \"" + object + "\", you can wash an object with -w object or --wash object"
 		end
 
 	end
@@ -70,7 +70,7 @@ class Washi
 		if object == nil
 			return "You need a object to wash! Use -w object or --wash object"
 		end
-		if object == "-object"
+		if object == "--object"
 			object = randomPointlessWord
 		end
 		begin
@@ -90,14 +90,14 @@ class Washi
 		puts <<-EOF 
 Ruby-client for http://waschi.org
 Usage:
-   -w object or --wash object      Wash someobject
-   -f object or --find object      Find someobject
-   -serverlist                     Print the list with the Servers
+   -w object or --wash object      Wash some object
+   -f object or --find object      Find some object
+   --serverlist                    Print a list with the Servers
 
-   If you have no idea for a object you can gerate one with
-   -object
+   If you have no idea for an object you can generate one with
+   --object
    Example:
-   -f -object
+   -f --object
    EOF
 	end
 
@@ -131,7 +131,7 @@ case ARGV[0]
 		w.find(ARGV[1])
 	when "--find"
 		w.find(ARGV[1])
-	when "-serverlist"
+	when "--serverlist"
 		w.printServerList
 	else
 	  w.printHelp

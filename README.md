@@ -21,14 +21,14 @@ On my setup $Location is ~
 ###Commands
 <pre>
 Usage:
-   -w object or --wash object    Wash object  
-   -f object or --find object    Find object  
-   -serverlist                   Print the list with the Servers  
+   -w object or --wash object      Wash some object
+   -f object or --find object      Find some object
+   --serverlist                    Print a list with the Servers
 
-   If you have no idea for a object you can gerate one with  
-   -object  
-   Example:  
-   -f -thing
+   If you have no idea for an object you can generate one with
+   --object
+   Example:
+   -f --object
 </pre>
 
 ###Problem?
