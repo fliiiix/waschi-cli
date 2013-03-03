@@ -6,8 +6,9 @@ Ruby-client for http://waschi.org
 <a href="http://flattr.com/thing/1158370/fliiiixwaschi-cli-on-GitHub" target="_blank">
 <img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
 
-#Setup
-You need Ruby, i try it with ruby 1.9.3p362 if you have an other version and it don't work create an Issue. 
+###Setup
+You need Ruby, i try it with ruby 1.9.3p362 if you have an other version and it don't work create an [Issue](https://github.com/fliiiix/waschi-cli/issues).
+
 1. Download washi.rb to $Location
 2. chmod +x washi.rb
 3. Create a link to a folder in your path like this ln -s $Location/washi.rb /usr/local/bin/washi
@@ -17,7 +18,8 @@ You need Ruby, i try it with ruby 1.9.3p362 if you have an other version and it 
 
 On my setup $Location is ~
 
-#Commands
+###Commands
+<pre>
 Usage:
    -w thing or --wasch thing     Wash something  
    -f thing or --find thing      Find something  
@@ -27,16 +29,16 @@ Usage:
    -thing  
    Example:  
    -f -thing
+</pre>
 
-#Problem?
+###Problem?
 Create an [Issue](https://github.com/fliiiix/waschi-cli/issues)
 
-#Credits & License
-MeikoDis creator of http://waschi.org/ 
-Revengeday for the Pointlessword API
-
-License
-Copyright (c) <2013>, <Felix>
+###Credits & License
+* MeikoDis creator of http://waschi.org/ 
+* Revengeday for the Pointlessword API
+* License
+Copyright (c) 2013, Felix 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
