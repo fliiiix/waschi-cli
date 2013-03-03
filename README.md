@@ -12,7 +12,7 @@ You need Ruby, i try it with ruby 1.9.3p362 if you have an other version and it 
 1. Download washi.rb to $Location
 2. chmod +x washi.rb
 3. Create a link to a folder in your path like this ln -s $Location/washi.rb /usr/local/bin/washi
-4. Reaload your $PATH variable with a Restart or something like this source .bashrc
+4. Reaload your $PATH variable with a Restart or something like "source .bashrc"
 5. ???
 6. Profit
 
