@@ -61,7 +61,7 @@ class Washi
 		if found
 			puts "Yeah, we found \"" + object + "\""
 		else
-			puts "Sorry, we haven't found \"" + object + "\", you can wash an object with -w object or --wash object"
+			puts "Sorry, we haven't found \"" + object + "\", you could wash an object with -w object or --wash object"
 		end
 
 	end
