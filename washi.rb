@@ -50,9 +50,9 @@ class Washi
 				uri["found"] = ""
 				if res != nil
 					found = true
-					puts "[OK]   ".green + uri
+					puts "[OK]        ".green + uri
 				else
-					puts "[FAIL] ".red + uri
+					puts "[Not Found] ".red + uri
 				end
 			rescue Exception => e
 				#well skip
