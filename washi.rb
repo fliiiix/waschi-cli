@@ -38,7 +38,7 @@ class Washi
 		if object == nil
 			return "You need a object to wasch! Use -f object or --find object"
 		end
-		if object == "-objec-t"
+		if object == "--object"
 			object = randomPointlessWord
 		end
 		found = false
