@@ -1,10 +1,8 @@
-waschi-cli
+Waschi-cli
 ==========
 
-Ruby-client for http://waschi.org
-
 <a href="http://flattr.com/thing/1158370/fliiiixwaschi-cli-on-GitHub" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a>
+<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0" /></a> Ruby-client for http://waschi.org 
 
 ![find a random object](https://github.com/fliiiix/waschi-cli/blob/master/img/find_random.png?raw=true)
 
