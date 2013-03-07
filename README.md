@@ -41,7 +41,7 @@ Create an [Issue](https://github.com/fliiiix/waschi-cli/issues)
 * Revengeday for the Pointlessword API
 * License
 
-Copyright (c) 2013, Felix 
+Copyright (c) 2013, [l33tname](http://identi.ca/l33tname)  
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
