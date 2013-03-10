@@ -38,6 +38,7 @@ Create an [Issue](https://github.com/fliiiix/waschi-cli/issues)
 ###Credits & License
 * MeikoDis creator of http://waschi.org/ 
 * Revengeday for the Pointlessword API
+* [herrsch0r](https://twitter.com/herrsch0r) for the epic logo for [Washi Bot](http://identi.ca/washibot)
 * License
 
 Copyright (c) 2013, [l33tname](http://identi.ca/l33tname)  
