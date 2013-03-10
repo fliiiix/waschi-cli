@@ -70,7 +70,7 @@ loop do
 
 				begin
 					waesche = w.wash(item.to_s).to_s
-					respons = postOnStatusNet("!Waschi Hey @" + user.to_s + " " + waesche)
+					respons = postOnStatusNet("!waschi Hey @" + user.to_s + " " + waesche)
 					if respons != nil && respons.index("error") != nil
 						@log.error respons
 					else
