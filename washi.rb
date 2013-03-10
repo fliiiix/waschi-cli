@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 require "net/http"
+
 #check gem for windows 
 begin
   require 'Win32/Console/ANSI' if RUBY_PLATFORM =~ /win32/
@@ -25,6 +26,16 @@ class Washi
 		if @serverList == nil
 			puts "No server were found!"
 		end
+
+		begin
+			@mode = ENV.fetch("mode")	
+		rescue Exception => e
+			@mode = "client"
+		end
+	end
+
+	def mode
+		return @mode
 	end
 
 	def printServerList()
@@ -79,15 +90,19 @@ class Washi
 			url = URI(server)
 			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => object)
 			server["echowash.php"] = ""
-			puts htmlDecoding(res.body)
-			puts "-> from server: " + server
+			if @mode == "lib"
+				return htmlDecoding(res.body)
+			else
+				return htmlDecoding(res.body) + "\n->your " + object + " from server: " + server
+			end
 		rescue Exception => e
 			#well skip
+			puts e
 		end
 	end
 
-	def printHelp()
-		puts <<-EOF 
+	def getHelp()
+		return <<-EOF 
 Ruby-client for http://waschi.org
 Usage:
    -w object or --wash object      Wash some object
@@ -110,9 +125,13 @@ Usage:
 	end
 
 	def randomPointlessWord()
-		url = URI("http://dev.revengeday.de/pointlesswords/api/")
-		res = Net::HTTP.get(url)
-		return htmlDecoding(res)
+		begin
+			url = URI("http://dev.revengeday.de/pointlesswords/api/")
+			res = Net::HTTP.get(url)
+			return htmlDecoding(res)
+		rescue Exception => e
+			return "NotReallyRandom"
+		end
 	end
 
 	def htmlDecoding(string)
@@ -120,19 +139,20 @@ Usage:
 	end
 end
 
-
 w = Washi.new
-case ARGV[0]
-	when "-w"
-		w.wash(ARGV[1])
-	when "--wash"
-		w.wash(ARGV[1])
-	when "-f"
-		w.find(ARGV[1])
-	when "--find"
-		w.find(ARGV[1])
-	when "--serverlist"
-		w.printServerList
-	else
-	  w.printHelp
+if w.mode != "lib"
+	case ARGV[0]
+		when "-w"
+			puts w.wash(ARGV[1])
+		when "--wash"
+			puts w.wash(ARGV[1])
+		when "-f"
+			w.find(ARGV[1])
+		when "--find"
+			w.find(ARGV[1])
+		when "--serverlist"
+			w.printServerList
+		else
+		  puts w.getHelp
+	end
 end
