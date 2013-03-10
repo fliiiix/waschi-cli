@@ -17,6 +17,7 @@ require_relative '../washi.rb'
 @pass = ""
 
 #setup
+@neu = File.exist?('washi.log')
 @log = Logger.new('washi.log')
 store = PStore.new('washi.pstore')
 
@@ -39,34 +40,48 @@ end
 w = Washi.new
 loop do
 	#collect data
-	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as"))
+	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as?" + Random.rand(40).to_s))
 
 	json_string["items"].each do |eintrag|
-		item = eintrag["title"].downcase
-		id = eintrag["object"]["id"]
-		user = eintrag["actor"]["contact"]["preferredUsername"]
-
+		begin
+			item = eintrag["title"].downcase
+			id = eintrag["url"]
+			user = eintrag["actor"]["contact"]["preferredUsername"]
+		rescue Exception => e
+			@log.error "e: " + e.to_s
+			break
+		end
+			
 		if(item.index("!waschi cli ") != nil)
 			item["!waschi cli "]= ""
 
 			store.transaction(true) do
-				 @lastId = store["lastId"]
+				@lastId = store["lastId"]
 			end
+			
 			if @lastId == id
 				break
 			end
 
-			if item != ""
+			if item != nil && item != "" 
 				store.transaction do
 				  store['lastId'] = id
 				end
 
-				respons = postOnStatusNet("Hey @" + user.to_s + " " + w.wash(item).to_s)
-
-				if respons.index("error") != nil
-					@log.error respons
-				else
-					@log.info "Hey @" + user.to_s + " " + w.wash(item).to_s
+				begin
+					waesche = w.wash(item.to_s).to_s
+					respons = postOnStatusNet("Hey @" + user.to_s + " " + waesche)
+					if respons.index("error") != nil
+						@log.error respons
+					else
+						@log.info "Hey @" + user.to_s + " " + waesche + " Item: " + item + " Id: " + id
+					end
+					if @neu
+						break
+						@neu = false
+					end
+				rescue Exception => e
+					@log.error "Beim waschen " + e.to_s
 				end
 			end
 		end

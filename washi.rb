@@ -85,19 +85,21 @@ class Washi
 			object = randomPointlessWord
 		end
 		begin
-			server = @serverList.sample
-			server["receive"]= "echowash"
-			url = URI(server)
+			serverUrl = @serverList.sample
+			# puts printServerList()
+			# puts "rnd"
+			serverUrl["receive"]= "echowash"
+			url = URI(serverUrl)
 			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => object)
-			server["echowash.php"] = ""
+			serverUrl["echowash.php"] = ""
 			if @mode == "lib"
-				return htmlDecoding(res.body)
+				return htmlDecoding(res.body) + " from serverUrl: " + serverUrl
 			else
-				return htmlDecoding(res.body) + "\n->your " + object + " from server: " + server
+				return htmlDecoding(res.body) + "\n->your " + object + " from serverUrl: " + serverUrl
 			end
 		rescue Exception => e
 			#well skip
-			puts e
+			puts "Washi rb wash say:" + e.to_s + " server : " + server
 		end
 	end
 
@@ -121,6 +123,9 @@ Usage:
 		url = URI('http://waschi.meikodis.org/servers.php')
 		res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2)
 		serverList = res.body.split(/\n/);
+		if serverList == nil
+			getServerList()
+		end
 		return serverList
 	end
 
