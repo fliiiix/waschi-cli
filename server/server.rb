@@ -37,7 +37,7 @@ def postOnStatusNet(status)
 end
 
 w = Washi.new
-while true
+loop do
 	#collect data
 	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as"))
 
