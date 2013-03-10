@@ -86,5 +86,5 @@ loop do
 			end
 		end
 	end
-	sleep 2
+	sleep 30
 end
