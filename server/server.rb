@@ -17,7 +17,7 @@ require_relative '../washi.rb'
 @pass = ""
 
 #setup
-@neu = File.exist?('washi.log')
+@existFile = File.exist?('washi.log')
 @log = Logger.new('washi.log')
 store = PStore.new('washi.pstore')
 
@@ -70,21 +70,21 @@ loop do
 
 				begin
 					waesche = w.wash(item.to_s).to_s
-					respons = postOnStatusNet("Hey @" + user.to_s + " " + waesche)
-					if respons.index("error") != nil
+					respons = postOnStatusNet("!Waschi Hey @" + user.to_s + " " + waesche)
+					if respons != nil && respons.index("error") != nil
 						@log.error respons
 					else
-						@log.info "Hey @" + user.to_s + " " + waesche + " Item: " + item + " Id: " + id
-					end
-					if @neu
-						break
-						@neu = false
+						@log.info "!Waschi Hey @" + user.to_s + " " + waesche + " Item: " + item + " Id: " + id
 					end
 				rescue Exception => e
 					@log.error "Beim waschen " + e.to_s
 				end
+				if !@existFile
+					@existFile = true
+					break
+				end
 			end
 		end
 	end
-	sleep 120
+	sleep 2
 end

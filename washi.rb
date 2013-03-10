@@ -95,7 +95,7 @@ class Washi
 			if @mode == "lib"
 				return htmlDecoding(res.body) + " from serverUrl: " + serverUrl
 			else
-				return htmlDecoding(res.body) + "\n->your " + object + " from serverUrl: " + serverUrl
+				return htmlDecoding(res.body) + "\n->your " + object + " from Server: " + serverUrl
 			end
 		rescue Exception => e
 			#well skip
