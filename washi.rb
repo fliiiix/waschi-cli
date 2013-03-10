@@ -93,7 +93,7 @@ class Washi
 			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => object)
 			serverUrl["echowash.php"] = ""
 			if @mode == "lib"
-				return htmlDecoding(res.body) + " from serverUrl: " + serverUrl
+				return htmlDecoding(res.body) + " from Server: " + serverUrl
 			else
 				return htmlDecoding(res.body) + "\n->your " + object + " from Server: " + serverUrl
 			end

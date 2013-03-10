@@ -74,7 +74,7 @@ loop do
 					if respons != nil && respons.index("error") != nil
 						@log.error respons
 					else
-						@log.info "!Waschi Hey @" + user.to_s + " " + waesche + " Item: " + item + " Id: " + id
+						@log.info "!waschi Hey @" + user.to_s + " " + waesche + " Item: " + item + " Id: " + id
 					end
 				rescue Exception => e
 					@log.error "Beim waschen " + e.to_s
