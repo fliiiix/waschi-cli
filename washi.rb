@@ -41,7 +41,7 @@ class Washi
 
 	def printServerList()
 		@serverList.each do |server|
-			server["receive.php"] = ""
+			server["receive.php"] = "" if server.include? "receive.php"
 			puts server
 		end
 	end
