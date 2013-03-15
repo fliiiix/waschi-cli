@@ -41,7 +41,6 @@ class Washi
 
 	def printServerList()
 		@serverList.each do |server|
-			server["receive.php"] = "" if server.include? "receive.php"
 			puts server
 		end
 	end
@@ -53,16 +52,14 @@ class Washi
 		if object == "--object"
 			object = randomPointlessWord
 		end
-		@serverList.each do |uri|
+		@serverList.each do |serverUrl|
 			begin
-				uri["receive.php"]= "found"
-				url = URI(uri)
+				url = URI(serverUrl + "found.php")
 				res = Net::HTTP.get(url).index(object)
-				uri["found"] = ""
 				if res != nil
-					puts "[OK]        ".green + uri
+					puts "[OK]        ".green + serverUrl
 				else
-					puts "[Not Found] ".red + uri
+					puts "[Not Found] ".red + serverUrl
 				end
 			rescue Exception => e
 				#well skip
@@ -79,20 +76,15 @@ class Washi
 		end
 		begin
 			serverUrl = @serverList.sample
-			puts serverUrl
-			serverUrl["receive"]= "echowash"
-			url = URI(serverUrl)
+			url = URI(serverUrl + "echowash.php")
 			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => object)
-			serverUrl["echowash.php"] = ""
 			if @mode == "lib"
 				return htmlDecoding(res.body) + " from Server: " + serverUrl
 			else
 				return htmlDecoding(res.body) + "\n->your " + object + " from Server: " + serverUrl
 			end
 		rescue Exception => e
-			#well skip
-			puts e
-			printServerList()
+			return "Well something went wrong"
 		end
 	end
 
@@ -115,7 +107,9 @@ Usage:
 	def getServerList()
 		url = URI('http://waschi.meikodis.org/servers.php')
 		res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2)
-		serverList = res.body.split(/\n/);
+		serverList = res.body.split(/\n/).each do |server| 
+			server["receive.php"] = "" if server.include? "receive.php"
+		end
 		if serverList == nil
 			getServerList()
 		end
@@ -138,7 +132,7 @@ Usage:
 end
 
 w = Washi.new
-if w.mode != "lib"
+if w.mode == "client"
 	case ARGV[0]
 		when "-w"
 			puts w.wash(ARGV[1])
