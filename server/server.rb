@@ -4,22 +4,20 @@
 require 'json'
 require 'net/http'
 require 'uri'
-require 'logger'
-require 'pstore'
 
 #set libmode for washi.rb
 ENV["mode"] = "lib"
 require_relative '../washi.rb'
+require_relative 'model.rb'
 
-#config
+#dent config
 @outserver = "identi.ca"
 @user = "washibot"
 @pass = ""
 
-#setup
-@existFile = File.exist?('washi.log')
-@log = Logger.new('washi.log')
-store = PStore.new('washi.pstore')
+MongoMapper.connection = Mongo::Connection.new("127.0.0.1", 27017, :pool_size => 5)
+MongoMapper.database =  "dentDB"
+
 
 def open(url)
   Net::HTTP.get(URI.parse(url))
@@ -33,14 +31,13 @@ def postOnStatusNet(status)
 	req.set_form_data('status' => status, "source" => "washident")
 
 	resp = Net::HTTP.new(url.host, url.port).start {|http| http.request(req) }
-	@log.info resp
 	return resp.body
 end
 
-w = Washi.new
 loop do
+	w = Washi.new
 	#collect data
-	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as?" + Random.rand(40).to_s))
+	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as")) # + Random.rand(40).to_s))
 
 	json_string["items"].each do |eintrag|
 		begin
@@ -48,43 +45,23 @@ loop do
 			id = eintrag["url"]
 			user = eintrag["actor"]["contact"]["preferredUsername"]
 		rescue Exception => e
-			@log.error "e: " + e.to_s
+			Log.new(:art => Status::Error, :message => e).save
 			break
 		end
 			
 		if(item.index("!waschi cli ") != nil)
 			item["!waschi cli "]= ""
 
-			store.transaction(true) do
-				@lastId = store["lastId"]
-			end
-			
-			if @lastId == id
-				break
-			end
-
-			if item != nil && item != "" 
-				store.transaction do
-				  store['lastId'] = id
+			if item != nil && item != ""  && Dent.where(:userId => id).first == nil
+				res = postOnStatusNet("!waschi Hey @" + user + " " + w.wash(item))
+				if res != nil && res.index("error") == nil
+					dent = Dent.new(:userId => id, :item => item, :user => user, :status => Status::Info)
+					dent.save
 				end
-
-				begin
-					waesche = w.wash(item.to_s).to_s
-					respons = postOnStatusNet("!waschi Hey @" + user.to_s + " " + waesche)
-					if respons != nil && respons.index("error") != nil
-						@log.error respons
-					else
-						@log.info "!waschi Hey @" + user.to_s + " " + waesche + " Item: " + item + " Id: " + id
-					end
-				rescue Exception => e
-					@log.error "Beim waschen " + e.to_s
-				end
-				if !@existFile
-					@existFile = true
-					break
-				end
+			else
+				puts Dent.where(:userId => id).first.userId
 			end
 		end
 	end
-	sleep 30
+	sleep 3
 end

@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 require "net/http"
+require "mongo_mapper"
 
 #check gem for windows 
 begin
@@ -52,7 +53,6 @@ class Washi
 		if object == "--object"
 			object = randomPointlessWord
 		end
-		found = false
 		@serverList.each do |uri|
 			begin
 				uri["receive.php"]= "found"
@@ -60,7 +60,6 @@ class Washi
 				res = Net::HTTP.get(url).index(object)
 				uri["found"] = ""
 				if res != nil
-					found = true
 					puts "[OK]        ".green + uri
 				else
 					puts "[Not Found] ".red + uri
@@ -69,12 +68,6 @@ class Washi
 				#well skip
 			end
 		end
-		if found
-			puts "Yeah, we found \"" + object + "\""
-		else
-			puts "Sorry, we haven't found \"" + object + "\", you could wash an object with -w object or --wash object"
-		end
-
 	end
 
 	def wash(object)
@@ -86,8 +79,7 @@ class Washi
 		end
 		begin
 			serverUrl = @serverList.sample
-			# puts printServerList()
-			# puts "rnd"
+			puts serverUrl
 			serverUrl["receive"]= "echowash"
 			url = URI(serverUrl)
 			res = Net::HTTP.post_form(url, 'key1' => @key1, 'key2'=> @key2, "Kleidung" => object)
@@ -99,7 +91,8 @@ class Washi
 			end
 		rescue Exception => e
 			#well skip
-			puts "Washi rb wash say:" + e.to_s + " server : " + server
+			puts e
+			printServerList()
 		end
 	end
 
