@@ -13,7 +13,7 @@ require_relative 'model.rb'
 #config
 @outserver = "identi.ca"
 @user = "washibot"
-@pass = ""
+@pass = ARGV[0]
 
 MongoMapper.connection = Mongo::Connection.new('localhost', 20799)
 MongoMapper.database = "dentDB"
@@ -37,7 +37,7 @@ end
 loop do
 	w = Washi.new
 	#collect data
-	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as")) # + Random.rand(40).to_s))
+	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as"))
 
 	json_string["items"].each do |eintrag|
 		begin
@@ -58,8 +58,6 @@ loop do
 					dent = Dent.new(:userId => id, :item => item, :user => user, :status => Status::Info)
 					dent.save
 				end
-			else
-				puts Dent.where(:userId => id).first.userId
 			end
 		end
 	end
