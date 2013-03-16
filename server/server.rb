@@ -63,5 +63,5 @@ loop do
 			end
 		end
 	end
-	sleep 3
+	sleep 120
 end
