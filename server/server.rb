@@ -5,12 +5,7 @@ require 'json'
 require 'net/http'
 require 'uri'
 
-#set libmode for washi.rb
-ENV["mode"] = "lib"
-require_relative '../washi.rb'
-require_relative 'model.rb'
-
-#dent config
+#config
 @outserver = "identi.ca"
 @user = "washibot"
 @pass = ""
@@ -21,6 +16,11 @@ require_relative 'model.rb'
 @db_connection.authenticate(@dbUser, @dbPass) unless (db.user.nil? || db.user.nil?)
 MongoMapper.connection = @db_connection
 MongoMapper.database =  "dentDB"
+
+#set libmode for washi.rb
+ENV["mode"] = "lib"
+require_relative '../washi.rb'
+require_relative 'model.rb'
 
 def open(url)
   Net::HTTP.get(URI.parse(url))
