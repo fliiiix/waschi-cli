@@ -14,9 +14,12 @@ require_relative 'model.rb'
 @outserver = "identi.ca"
 @user = "washibot"
 @pass = ""
+@mongoURI = "mongodb://username:passwort@localhost:20799/dentDB"
 
-MongoMapper.connection = Mongo::Connection.new("127.0.0.1", 27017, :pool_size => 5)
-MongoMapper.database =  "dentDB"
+MongoMapper.connection = Mongo::MongoClient.new(mongodb://username:passwort@localhost:12323/Database)
+#MongoMapper.connection = Mongo::Connection.new("127.0.0.1", 27017, :pool_size => 5)
+MongoMapper.setup({'production' => {'uri' => @mongoURI}}, 'production')
+#MongoMapper.database =  "dentDB"
 
 
 def open(url)
