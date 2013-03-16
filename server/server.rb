@@ -14,13 +14,13 @@ require_relative 'model.rb'
 @outserver = "identi.ca"
 @user = "washibot"
 @pass = ""
-@mongoURI = "mongodb://username:passwort@localhost:20799/dentDB"
+@dbUser = ""
+@dbPass = ""
 
-MongoMapper.connection = Mongo::MongoClient.new(mongodb://username:passwort@localhost:12323/Database)
-#MongoMapper.connection = Mongo::Connection.new("127.0.0.1", 27017, :pool_size => 5)
-MongoMapper.setup({'production' => {'uri' => @mongoURI}}, 'production')
-#MongoMapper.database =  "dentDB"
-
+@db_connection = Mongo::Connection.new("localhost", 20799).db("dentDB")
+@db_connection.authenticate(@dbUser, @dbPass) unless (db.user.nil? || db.user.nil?)
+MongoMapper.connection = @db_connection
+MongoMapper.database =  "dentDB"
 
 def open(url)
   Net::HTTP.get(URI.parse(url))
