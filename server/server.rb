@@ -14,12 +14,10 @@ require_relative 'model.rb'
 @outserver = "identi.ca"
 @user = "washibot"
 @pass = ""
-@dbUser = ""
-@dbPass = ""
 
 MongoMapper.connection = Mongo::Connection.new('localhost', 20799)
 MongoMapper.database = "dentDB"
-MongoMapper.database.authenticate(@dbUser, @dbPass)
+MongoMapper.database.authenticate(@user, @pass)
 
 def open(url)
   Net::HTTP.get(URI.parse(url))
