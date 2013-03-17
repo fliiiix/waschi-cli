@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 require "net/http"
-require "mongo_mapper"
 
 #check gem for windows 
 begin
@@ -54,7 +53,7 @@ class Washi
 		end
 		@serverList.each do |serverUrl|
 			begin
-				url = URI(serverUrl + "found.php")
+				url = URI(serverUrl + "found")
 				res = Net::HTTP.get(url).index(object)
 				if res != nil
 					puts "[OK]        ".green + serverUrl
