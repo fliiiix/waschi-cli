@@ -38,6 +38,9 @@ You can dent: "!waschi cli object" [more informations](server/README.md)
 ###Problem?
 Create an [Issue](https://github.com/fliiiix/waschi-cli/issues)
 
+###Don't like ruby?
+Try the python version. https://github.com/vanita5/washi-cli
+
 ###Credits & License
 * MeikoDis creator of http://waschi.org/ 
 * Revengeday for the Pointlessword API
