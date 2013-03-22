@@ -1,0 +1,39 @@
+#!/bin/sh -e
+
+RUNWHEN=",M/2"
+
+# The constraint string consists of a sequence of unit constraints. Each unit
+# constraint consists of a comma, one of the following letters indicating which
+# unit is constrained:
+#
+#     * y: year.
+#     * m: month (in the range 1-12).
+#     * d: day of the month (in the range 1-28, 1-29, 1-30, or 1-31, as
+#          appropriate for the month in question).
+#     * w: day of the week (in the range 0-6, with 0 representing Sunday).
+#     * H: hour of the day (in the range 0-23).
+#     * M: minute of the hour (in the range 0-59).
+#     * S: second of the minute (in the range 0-59). 
+#
+# and finally one of the following:
+#
+#     * =n: matches times when the given unit is exactly n.
+#     * -n: matches times when the given unit is exactly m, where m+n is one
+#           more than the largest value of the unit. (For example, n+m=24 for H,
+#           so ,H-1 is equivalent to ,H=23.
+#     * /n: matches times when the given unit is divisible by n. 
+
+# many tools and programming languages need these e.g. to find user-installed modules
+export USER=user
+export HOME=/home/user
+export washiPW=Passwort
+export ruby=your ruby
+export PATH=your path
+
+exec 2>&1 \
+rw-add n d1S now1s \
+rw-match \$now1s $RUNWHEN wake \
+sh -c '
+  echo "@$wake" | tai64nlocal | sed "s/^/next run time: /"
+  exec "$@"' arg0 \
+rw-sleep \$wake \
