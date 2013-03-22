@@ -8,6 +8,7 @@ require 'uri'
 #set libmode for washi.rb
 ENV["mode"] = "lib"
 require_relative '../washi.rb'
+require_relative 'model.rb'
 
 #config
 @outserver = "identi.ca"
