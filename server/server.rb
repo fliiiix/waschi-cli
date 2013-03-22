@@ -13,7 +13,7 @@ require_relative 'model.rb'
 #config
 @outserver = "identi.ca"
 @user = "washibot"
-@pass = ARGV[0]
+@pass = ENV["washiPW"]
 
 MongoMapper.connection = Mongo::Connection.new('localhost', 20799)
 MongoMapper.database = "dentDB"
@@ -34,32 +34,30 @@ def postOnStatusNet(status)
 	return resp.body
 end
 
-loop do
-	w = Washi.new
-	#collect data
-	json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as"))
 
-	json_string["items"].each do |eintrag|
-		begin
-			item = eintrag["title"].downcase
-			id = eintrag["url"]
-			user = eintrag["actor"]["contact"]["preferredUsername"]
-		rescue Exception => e
-			Log.new(:art => Status::Error, :message => e).save
-			break
-		end
-			
-		if(item.index("!waschi cli ") != nil)
-			item["!waschi cli "]= ""
+w = Washi.new
+#collect data
+json_string = JSON.parse(open("http://identi.ca/api/statusnet/groups/timeline/54796.as"))
 
-			if item != nil && item != ""  && Dent.where(:userId => id).first == nil
-				res = postOnStatusNet("!waschi Hey @" + user + " " + w.wash(item))
-				if res != nil && res.index("error") == nil
-					dent = Dent.new(:userId => id, :item => item, :user => user, :status => Status::Info)
-					dent.save
-				end
+json_string["items"].each do |eintrag|
+	begin
+		item = eintrag["title"].downcase
+		id = eintrag["url"]
+		user = eintrag["actor"]["contact"]["preferredUsername"]
+	rescue Exception => e
+		Log.new(:art => Status::Error, :message => e).save
+		break
+	end
+		
+	if(item.index("!waschi cli ") != nil)
+		item["!waschi cli "]= ""
+
+		if item != nil && item != ""  && Dent.where(:userId => id).first == nil
+			res = postOnStatusNet("!waschi Hey @" + user + " " + w.wash(item))
+			if res != nil && res.index("error") == nil
+				dent = Dent.new(:userId => id, :item => item, :user => user, :status => Status::Info)
+				dent.save
 			end
 		end
 	end
-	sleep 120
 end
